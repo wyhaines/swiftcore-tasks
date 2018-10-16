@@ -29,6 +29,21 @@ Or install it yourself as:
 
 ## Usage
 
+```ruby
+result_list = []
+list = Swiftcore::Tasks::TaskList.new
+list << Swiftcore::Tasks::Task.new(4) { result_list << 3 }
+list << Swiftcore::Tasks::Task.new(2) do
+  sublist = Swiftcore::Tasks::TaskList.new
+  sublist << Swiftcore::Tasks::Task.new(3) { result_list << 2 }
+  sublist << Swiftcore::Tasks::Task.new(5) { result_list << 5 }
+  sublist
+end
+list << Swiftcore::Tasks::Task.new(1) { result_list << 1 }
+
+list.run
+result_list == [1,2,3,5]
+```
 
 ## Contributing
 
