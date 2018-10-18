@@ -94,5 +94,22 @@ module Swiftcore
       assert result_list == [1, 2, 3, 5]
       assert list.empty?
     end
+
+    def build_tasklist_to_take_args(result_list)
+      list = Swiftcore::Tasks::TaskList.new
+      block = proc { |x| result_list << (result_list.last || 1) * x }
+      list << Swiftcore::Tasks::Task.new(0, &block)
+      list << Swiftcore::Tasks::Task.new(0, &block)
+      list << Swiftcore::Tasks::Task.new(0, &block)
+      list << Swiftcore::Tasks::Task.new(0, &block)
+    end
+
+    def test_tasks_with_args_work
+      result_list = []
+      list = build_tasklist_to_take_args(result_list)
+      list.run(2)
+      assert result_list == [2, 4, 8, 16]
+      assert list.empty?
+    end
   end
 end

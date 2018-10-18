@@ -14,9 +14,9 @@ module Swiftcore
         super(*args)
       end
 
-      def run
+      def run(*args)
         @status = :running
-        tick while any?
+        tick(*args) while any?
         @status = :finished
       end
 
@@ -26,11 +26,11 @@ module Swiftcore
       end
 
       # Run a single task in the queue.
-      def tick
+      def tick(*args)
         prior_status = @status
         @status = :tick
         task = first
-        result = task.call
+        result = task.call(*args)
         delete task
         merge(result) if result.is_a?(TaskList)
         @status = prior_status
